@@ -10,10 +10,10 @@ var ip = require('ip');
 
 var parsetoken = require('./parseJWT'); //used once already logged in
 
-// //GET home
-// exports.index = function(req, res){
-//     response.success("Running", res)
-// };
+//GET home
+exports.index = function(req, res){
+    response.success("Running....", res)
+};
 
 //POST register
 exports.register = function(req, res){
