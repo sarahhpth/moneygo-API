@@ -206,11 +206,16 @@ exports.profile = function(req, res){
                 console.log(error);
             }else{
                 res.json({
-                    "id": data.id,
-                    "name": data.name,
-                    "email": data.email,
-                    "password": data.password,
-                    "balance": data.balance
+                    id: rows[0].id,
+                    name: rows[0].name,
+                    email: rows[0].email,
+                    password: rows[0].password,
+                    balance: rows[0].balance,
+                    // "id": data.id,
+                    // "name": data.name,
+                    // "email": data.email,
+                    // "password": data.password,
+                    // "balance": data.balance
                 });
                 // console.log(data);
                 // res.json(data);
