@@ -3,7 +3,7 @@ var auth = require('./auth');
 var router = express.Router();
 var verifikasi = require('./verifikasi')
 var jsonku = require('./logged_in');
-var controller = require('./controller');
+// var controller = require('./controller');
 
 // Registrasi
 router.post('/profile', auth.registrasi);
