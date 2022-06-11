@@ -118,9 +118,9 @@ exports.topup = function(req, res){
     var topup = req.body.balance;
 
     var parsedtoken = parsetoken(token);
-    // console.log(parsedtoken);
-    // var data = parsedtoken.rows[0];
-    var data = parsedtoken.rows;
+    
+    var data = parsedtoken.rows[0];
+    console.log(data);
     var id = data.id;
 
     conn.query('UPDATE users SET balance = balance + ? WHERE id = ?', [topup, id],
