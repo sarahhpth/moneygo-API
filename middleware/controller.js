@@ -35,11 +35,10 @@ exports.register = function(req, res){
             console.log(error);
         }else{
             if(rows.length == 0){   //post.email is not found in db
-                var query = "INSERT INTO ?? SET ?";     
-                var table = ["users"];
-                query = mysql.format(query, table);
+                var query = "INSERT INTO users (name, email, password, role, balance) VALUES (?, ?, ?, ?, ?)";     
+                var table = [post.name, post.email, post.password, post.role, post.balance];
 
-                conn.query(query, post, function(error, rows){
+                conn.query(query, table, function(error, rows){
                     if(error){
                         console.log(error);
                     }else{
