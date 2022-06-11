@@ -3,7 +3,7 @@
 var response = require('../res');
 const conn = require('../koneksi');
 var mysql = require('mysql');
-var md5 = require('MD5');
+// var md5 = require('MD5');
 var jwt = require('jsonwebtoken');
 var config = require('../config/secret');
 var ip = require('ip');
