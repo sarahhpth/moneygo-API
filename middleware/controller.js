@@ -140,8 +140,8 @@ exports.transfer = function(req, res){
     var amount = req.body.balance;
     var token = req.headers.authorization;
 
-    var parsedtoken = parsetoken(token);
-    var data = parsedtoken.rows[0];
+    var data = parsetoken(token);
+    // var data = parsedtoken.rows[0];
     
     var sender_id = data.id;
     var sender_name = data.name;
@@ -195,8 +195,8 @@ exports.profile = function(req, res){
     //req
     var token = req.headers.authorization;
 
-    var parsedtoken = parsetoken(token);
-    var data = parsedtoken.rows[0];
+    var data = parsetoken(token);
+    // var data = parsedtoken.rows[0];
 
     var id = data.id;
     
