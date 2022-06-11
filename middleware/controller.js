@@ -118,19 +118,19 @@ exports.topup = function(req, res){
     var topup = req.body.balance;
 
     var parsedtoken = parsetoken(token);
-    console.log(parsedtoken);
+    // console.log(parsedtoken);
     // var data = parsedtoken.rows[0];
+    var data = parsedtoken.rows;
+    var id = data.id;
 
-    // var id = data.id;
-
-    // conn.query('UPDATE users SET balance = balance + ? WHERE id = ?', [topup, id],
-    //     function(error, rows, fields){
-    //         if(error){
-    //             console.log(error);
-    //         }else{
-    //             response.success("Topup successful", res);
-    //         }
-    //     });
+    conn.query('UPDATE users SET balance = balance + ? WHERE id = ?', [topup, id],
+        function(error, rows, fields){
+            if(error){
+                console.log(error);
+            }else{
+                response.success("Topup successful", res);
+            }
+        });
 };
 
 //PUT transfer
