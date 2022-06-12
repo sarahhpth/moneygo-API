@@ -149,27 +149,29 @@ exports.transfer = function(req, res){
     conn.query('SELECT id, name FROM users WHERE email = ?', [receiver_email], function(error, rows, fields){
         var receiver_id = rows[0].id;
         var receiver_name = rows[0].name;
-        
+        if(error){
+            console.log(error);
+        }else if(sender_id == receiver_id){
+            response.failed("You cannot transfer to yourself", res);
+        }
         conn.query('UPDATE users SET balance = balance - ? WHERE id = ? ;'+
             'UPDATE users SET balance = balance + ? WHERE id = ? ',
             [amount, sender_id, amount, receiver_id],
             function(error, rows, fields){
                 if(error){
                     console.log(error);
-                }else if(sender_id == receiver_id){
-                    response.failed("You cannot transfer to yourself", res);
-                }else{
-                    conn.query('SELECT balance FROM users WHERE id = ?', [sender_id], 
-                        function(error, rows, fields){
-                            var sender_balance = rows[0].balance;
-                            if(sender_balance < amount){
-                                response.failed("Balance is not sufficient. You need to topup", res);
-                            }else{
-                                response.success("Transfered successfully", res);
-                            }
-                        });
-                    
                 }
+                conn.query('SELECT balance FROM users WHERE id = ?', [sender_id], 
+                    function(error, rows, fields){
+                        var sender_balance = rows[0].balance;
+                        if(sender_balance < amount){
+                            response.failed("Balance is not sufficient. You need to topup", res);
+                        }else{
+                            response.success("Transfered successfully", res);
+                        }
+                    });
+                    
+                
         });
 
         // conn.query('UPDATE users SET balance = balance + ? WHERE id = ? ', 
