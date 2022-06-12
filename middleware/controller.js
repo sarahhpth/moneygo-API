@@ -179,39 +179,6 @@ exports.transfer = function(req, res){
             });
         }
 
-        
-
-
-        
-
-        // conn.query('UPDATE users SET balance = balance + ? WHERE id = ? ', 
-        //     [amount, receiver_id],
-        //     function(error, rows, fields){
-        //         if(error){
-        //             console.log(error);
-        //         }else if(sender_id == receiver_id){
-        //             response.failed("You cannot transfer to yourself", res);
-        //         }else{
-        //             if(rows[0].balance < amount){
-        //                 response.failed("Balance is not sufficient. You need to topup", res);
-        //             }else{
-        //                 response.success("Transfered successfully", res);
-        //             }
-                    
-        //         }
-        // });
-
-        // conn.query('INSERT INTO transactions (sender_id,receiver_id,sender,receiver,amount) VALUES (?,?,?,?,?)', 
-        // [sender_id, receiver_id, sender_name, receiver_name, amount],
-        // function(error, rows, fields){
-        //     if(error){
-        //         console.log(error);
-        //     }else if(sender_id == receiver_id){
-        //         response.failed("You cannot transfer to yourself", res);
-        //     }else{
-        //         response.success("tar dulu", res);
-        //     }
-        // });
     })
 
 };
