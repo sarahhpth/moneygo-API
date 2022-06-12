@@ -199,7 +199,7 @@ exports.transfer = function(req, res){
             }else if(sender_id == receiver_id){
                 response.failed("You cannot transfer to yourself", res);
             }else{
-                response.success("Transfered successfully", res);
+                response.success("tar dulu", res);
             }
         });
     })
