@@ -145,7 +145,7 @@ exports.transfer = function(req, res){
     
     var sender_id = data.id;
     var sender_name = data.name;
-    
+
     conn.query('SELECT id, name FROM users WHERE email = ?', [receiver_email], function(error, rows, fields){
         var receiver_id = rows[0].id;
         var receiver_name = rows[0].name;
@@ -153,26 +153,36 @@ exports.transfer = function(req, res){
             console.log(error);
         }else if(sender_id == receiver_id){
             response.failed("You cannot transfer to yourself", res);
+        }else{
+            //cek saldo sender
+            conn.query('SELECT balance from users WHERE id = ?',[sender_id],
+                function(error, rows, fields){
+                    var sender_balance = rows[0].balance
+                    if(sender_balance < amount){
+                        response.failed("Topup first", res);
+                    }else{
+                        conn.query('UPDATE users SET balance = balance - ? WHERE id = ? ;'+
+                        'UPDATE users SET balance = balance + ? WHERE id = ? ;'+
+                        'INSERT INTO transactions (sender_id,receiver_id,sender,receiver,amount) VALUES (?,?,?,?,?)',
+                        [amount, sender_id, amount, receiver_id, 
+                            sender_id, receiver_id, sender_name, receiver_name, amount],
+                        function(error, rows, fields){
+                            if(error){
+                                console.log(error);
+                            }else{
+                                response.success("Transfered successfully", res);
+                            }
+                        
+                        });
+                    }
+
+            });
         }
-        conn.query('UPDATE users SET balance = balance - ? WHERE id = ? ;'+
-            'UPDATE users SET balance = balance + ? WHERE id = ? ',
-            [amount, sender_id, amount, receiver_id],
-            function(error, rows, fields){
-                if(error){
-                    console.log(error);
-                }
-                conn.query('SELECT balance FROM users WHERE id = ?', [sender_id], 
-                    function(error, rows, fields){
-                        var sender_balance = rows[0].balance;
-                        if(sender_balance < amount){
-                            response.failed("Balance is not sufficient. You need to topup", res);
-                        }else{
-                            response.success("Transfered successfully", res);
-                        }
-                    });
-                    
-                
-        });
+
+        
+
+
+        
 
         // conn.query('UPDATE users SET balance = balance + ? WHERE id = ? ', 
         //     [amount, receiver_id],
@@ -191,17 +201,17 @@ exports.transfer = function(req, res){
         //         }
         // });
 
-        conn.query('INSERT INTO transactions (sender_id,receiver_id,sender,receiver,amount) VALUES (?,?,?,?,?)', 
-        [sender_id, receiver_id, sender_name, receiver_name, amount],
-        function(error, rows, fields){
-            if(error){
-                console.log(error);
-            }else if(sender_id == receiver_id){
-                response.failed("You cannot transfer to yourself", res);
-            }else{
-                response.success("tar dulu", res);
-            }
-        });
+        // conn.query('INSERT INTO transactions (sender_id,receiver_id,sender,receiver,amount) VALUES (?,?,?,?,?)', 
+        // [sender_id, receiver_id, sender_name, receiver_name, amount],
+        // function(error, rows, fields){
+        //     if(error){
+        //         console.log(error);
+        //     }else if(sender_id == receiver_id){
+        //         response.failed("You cannot transfer to yourself", res);
+        //     }else{
+        //         response.success("tar dulu", res);
+        //     }
+        // });
     })
 
 };
