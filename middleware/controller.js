@@ -163,7 +163,7 @@ exports.transfer = function(req, res){
                         function(error, rows, fields){
                             var sender_balance = rows[0].balance;
                             if(sender_balance < amount){
-                            response.failed("Balance is not sufficient. You need to topup", res);
+                                response.failed("Balance is not sufficient. You need to topup", res);
                             }else{
                                 response.success("Transfered successfully", res);
                             }
