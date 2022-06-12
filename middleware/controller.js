@@ -46,7 +46,7 @@ exports.register = function(req, res){
                     }
                 });
             }else{
-                response.failed("Email is already registered", res); //else if found
+                response.failed("Email is already registered to moneygo", res); //else if found
             }
         }
     });
