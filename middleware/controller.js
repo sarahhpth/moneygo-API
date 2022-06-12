@@ -22,8 +22,8 @@ exports.register = function(req, res){
         name : req.body.name,
         email : req.body.email,
         password : req.body.password,   //md5(req.body.password)
-        role : '2', //blank
-        balance : req.body.balance
+        role : '2', // leave blank
+        balance : '0' //leave blank
     }
                                          
     var query = "SELECT email FROM users WHERE ?? = ?"; //double "??" for sql query, single "?" for variable
