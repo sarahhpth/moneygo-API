@@ -21,7 +21,7 @@ exports.register = function(req, res){
     var post = {
         name : req.body.name,
         email : req.body.email,
-        password : req.body.password,   //md5(req.body.password)
+        password : req.body.pass,   //md5(req.body.password)
         role : '2', // leave blank
         balance : '0' //leave blank
     }
@@ -59,7 +59,7 @@ exports.login = function(req, res){
     //req
     var post = {
         email : req.body.email,
-        password : req.body.password
+        password : req.body.pass
     }
 
     var query = "SELECT * FROM users WHERE ?? = ? AND ?? = ?";
@@ -74,9 +74,7 @@ exports.login = function(req, res){
             // response.success("error", res);
         }else{
             if(rows.length == 1){
-                var token = jwt.sign({rows}, config.secret, {
-                    expiresIn: 1440
-                });
+                var token = jwt.sign({rows}, config.secret);
 
                 var user_id = rows[0].id;
                 var data = {
