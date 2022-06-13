@@ -42,10 +42,12 @@ exports.register = function(req, res){
                     if(error){
                         console.log(error);
                     }else{
+                        console.log("Email is already registered to moneygo");
                         response.success("Registered", res);
                     }
                 });
             }else{
+                console.log("Email is already registered to moneygo");
                 response.failed("Email is already registered to moneygo", res); //else if found
             }
         }
@@ -100,6 +102,7 @@ exports.login = function(req, res){
                     }
                 // });
             }else{
+                console.log("incorrect pass/email");
                 res.json({
                     "error": true,
                     "message": "Incorrect password or email"
