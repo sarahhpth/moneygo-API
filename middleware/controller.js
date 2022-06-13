@@ -21,7 +21,7 @@ exports.register = function(req, res){
     var post = {
         name : req.body.name,
         email : req.body.email,
-        pass : req.body.password,   //md5(req.body.password)
+        password : req.body.password,   //md5(req.body.password)
         role : '2', // leave blank
         balance : '0' //leave blank
     }
@@ -59,7 +59,7 @@ exports.login = function(req, res){
     //req
     var post = {
         email : req.body.email,
-        pass : req.body.password
+        password : req.body.password
     }
 
     var query = "SELECT * FROM users WHERE ?? = ? AND ?? = ?";
@@ -102,7 +102,7 @@ exports.login = function(req, res){
                     }
                 // });
             }else{
-                console.log("incorrect pass/email");
+                console.log("incorrect password/email");
                 res.json({
                     "error": true,
                     "message": "Incorrect password or email"
@@ -206,7 +206,7 @@ exports.profile = function(req, res){
                     id: rows[0].id,
                     name: rows[0].name,
                     email: rows[0].email,
-                    pass: rows[0].password,
+                    password: rows[0].password,
                     balance: rows[0].balance,
                     // "id": data.id,
                     // "name": data.name,
