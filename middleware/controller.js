@@ -86,7 +86,7 @@ exports.login = function(req, res){
                 }
 
                 // var query = "INSERT INTO ?? SET ?";
-                // var table = ["token"];
+                // var table = ["token"]; 
                 // query = mysql.format(query, table);
 
                 // conn.query(query, data, function(error, rows){
