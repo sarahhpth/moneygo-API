@@ -13,9 +13,9 @@ var conn =
 
 conn.connect(function(err, conn){
     if(err) {
-        console.log("MySQL tidak terkoneksi");
+        console.log("Failed to connect to db");
     }
-    if(conn) console.log("MySQL terkoneksi");
+    if(conn) console.log("Connected to db");
 })
 
 module.exports = conn;

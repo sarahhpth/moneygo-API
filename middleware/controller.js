@@ -1,7 +1,7 @@
 'use strict';
 
 var response = require('../res');
-const conn = require('../koneksi');
+const conn = require('../connection');
 var mysql = require('mysql');
 // var md5 = require('MD5');
 var jwt = require('jsonwebtoken');
@@ -11,9 +11,9 @@ let referralCodeGenerator = require('referral-code-generator');
 
 var parsetoken = require('./parseJWT'); //used once already logged in
 
-//GET home
+//GET index
 exports.index = function(req, res){
-    response.success("Running....", res)
+    response.success("Connected to Moneygo yeyyyyy", res)
 };
 
 //POST register
@@ -23,7 +23,6 @@ exports.register = function(req, res){
         name : req.body.name,
         email : req.body.email,
         password : req.body.pass,   //md5(req.body.password)
-        role : '2', // leave blank
         balance : '0' //leave blank
     }
                                          
@@ -38,8 +37,8 @@ exports.register = function(req, res){
             if(rows.length == 0){   //post.email is not found in db
                 var nomor_wallet = referralCodeGenerator.alphaNumeric('lowercase', 8, 7);
 
-                var query = "INSERT INTO users (name, email, password, role, nomor_wallet, balance) VALUES (?, ?, ?, ?, ?, ?)";     
-                var table = [post.name, post.email, post.password, post.role, nomor_wallet, post.balance];
+                var query = "INSERT INTO users (name, email, password, nomor_wallet, balance) VALUES (?, ?, ?, ?, ?)";     
+                var table = [post.name, post.email, post.password, nomor_wallet, post.balance];
 
                 conn.query(query, table, function(error, rows){
                     if(error){
@@ -126,7 +125,7 @@ exports.topup = function(req, res){
     // var data = parsedtoken.rows[0];
     // console.log(data);
     var id = data.id;
-
+    
     conn.query('UPDATE users SET balance = balance + ? WHERE id = ?', [topup, id],
         function(error, rows, fields){
             if(error){
@@ -187,6 +186,43 @@ exports.transfer = function(req, res){
 
 };
 
+//POST transaksi/pembayaran
+exports.transaksi = function(req, res){
+    //req
+    var amount = req.body.balance;
+    var token = req.headers.authorization;
+
+    var data = parsetoken(token);
+    // var data = parsedtoken.rows[0];
+    
+    var user_id = data.id;
+
+    //cek saldo sender
+    conn.query('SELECT balance from users WHERE id = ?',[user_id],
+        function(error, rows, fields){
+            var user_balance = rows[0].balance
+            if(user_balance < amount){
+                response.failed("Topup first", res);
+            }else{
+                conn.query('UPDATE users SET balance = balance - ? WHERE id = ?',
+                [amount, user_id],
+                function(error, rows, fields){
+                    if(error){
+                        console.log(error);
+                    }else{
+                        response.success("Payment successful", res);
+                    }
+                
+                });
+            }
+
+    });
+        
+
+    
+
+};
+
 
 //GET profile
 exports.profile = function(req, res){
@@ -228,56 +264,6 @@ exports.profile = function(req, res){
 
 
 
-
-
-
-
-// //GET all record
-// exports.allusers = function(req, res){
-//     conn.query('SELECT * FROM users', function(error, rows, fields){
-//         if(error){
-//             conn.log(error);
-//         }else{
-//             response.success(rows, res)
-//         }
-//     });
-// };
-
-// //GET one user
-// exports.user = function(req, res){
-//     let id = req.params.id;  //taro di parameter   
-
-//     conn.query('SELECT * FROM users WHERE id = ?', [id],
-//         function(error, rows, fields){
-//             if(error){
-//                 console.log(error);
-//             }else{
-//                 response.success(rows, res);
-//             }
-
-//     });
-
-// };
-
-// //POST Register
-// exports.register = function (req, res){
-//     var name = req.body.name;
-//     var email = req.body.email;
-//     var password = req.body.password;
-//     var role = req.body.role;
-//     var balance = req.body.balance;
-
-//     conn.query('INSERT INTO users (name,email,password,role,balance) VALUES (?,?,?,2,?)',
-//         [name, email, password, balance],
-//         function(error, rows, fields){
-//             if(error){
-//                 console.log(error);
-//             }else{
-//                 response.success("Registered", res);
-//             }
-//         });
-
-// };
 
 
 
