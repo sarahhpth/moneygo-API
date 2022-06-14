@@ -208,6 +208,7 @@ exports.profile = function(req, res){
                     name: rows[0].name,
                     email: rows[0].email,
                     password: rows[0].password,
+                    nomor_wallet: rows[0].nomor_wallet,
                     balance: rows[0].balance,
                     // "id": data.id,
                     // "name": data.name,
