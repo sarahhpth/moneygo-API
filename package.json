@@ -27,7 +27,8 @@
     "mysql": "^2.18.1",
     "node-modules": "^1.0.1",
     "passport": "^0.5.2",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "referral-code-generator": "^1.0.8"
   },
   "devDependencies": {
     "nodemon": "^2.0.16"

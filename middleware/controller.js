@@ -7,6 +7,7 @@ var mysql = require('mysql');
 var jwt = require('jsonwebtoken');
 var config = require('../config/secret');
 var ip = require('ip');
+let referralCodeGenerator = require('referral-code-generator');
 
 var parsetoken = require('./parseJWT'); //used once already logged in
 
@@ -35,8 +36,10 @@ exports.register = function(req, res){
             console.log(error);
         }else{
             if(rows.length == 0){   //post.email is not found in db
-                var query = "INSERT INTO users (name, email, password, role, balance) VALUES (?, ?, ?, ?, ?)";     
-                var table = [post.name, post.email, post.password, post.role, post.balance];
+                var nomor_wallet = referralCodeGenerator.alphaNumeric('lowercase', 8, 7);
+
+                var query = "INSERT INTO users (name, email, password, role, nomor_wallet, balance) VALUES (?, ?, ?, ?, ?, ?)";     
+                var table = [post.name, post.email, post.password, post.role, nomor_wallet, post.balance];
 
                 conn.query(query, table, function(error, rows){
                     if(error){
